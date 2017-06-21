@@ -4,13 +4,13 @@
         <script>
         	
         	var VAZIO = {
-        		simbolo : "___"
+        		simbolo : "_"
         	};
         	var jogadorX = {
-        		simbolo : '_X_'
+        		simbolo : 'X'
         	}
         	var jogadorO = {
-        		simbolo : '_O_'
+        		simbolo : 'O'
         	}
         	var jogadorAtual = jogadorX;
 
@@ -29,6 +29,9 @@
 	    		var button = document.createElement("button");
         		//atribuição do simbolo
         		button.textContent = tabuleiro[linha][coluna].simbolo;
+
+        		button.classList.add("botaoTabuleiro"); // adiciona a classe    ???
+
         		button.onclick = function(){
         			fazerJogada(linha, coluna);
         		}
@@ -64,9 +67,14 @@
         		
         	}
 
-
         </script>
     </head>
+    <style> 
+    	.botaoTabuleiro{
+    	width: 40px;
+    	height: 40px;
+    	}
+    </style>
     <body onload="desenharTabuleiro()">
     </body>
 </html>
