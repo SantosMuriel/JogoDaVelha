@@ -4,15 +4,19 @@
         <script>
         	
         	var VAZIO = {
-        		simbolo : "_"
+        		simbolo: "_",
+        		valor: 0
         	};
         	var jogadorX = {
-        		simbolo : 'X'
+        		simbolo: 'X',
+        		valor: 1
         	}
         	var jogadorO = {
-        		simbolo : 'O'
+        		simbolo: 'O',
+        		valor: -1
         	}
         	var jogadorAtual = jogadorX;
+        	var numeroDeJogadas = 0;
 
         	var tabuleiro = [ 
 		        [VAZIO, VAZIO, VAZIO],
@@ -26,6 +30,7 @@
 	    	}
 	    	function limparTela(){
 	    		document.querySelector("#tabuleiro").innerHTML = " ";
+	    		document.querySelector("#status").innerHTML = " ";
 	    	}
 	    	function criarBotaoTabuleiro(linha, coluna){
 	    		var button = document.createElement("button");
@@ -53,15 +58,83 @@
         			jogadorAtual = jogadorX;
         		}
         	}
+        	function alterarStatus(mensagem){
+        		document.querySelector("#status").innerHTML = "JOGADA INVÁLIDA!";
+        	}
+        	function checarTrilha(trilha){
+        		if((trilha[0].valor + trilha[1].valor + trilha[2].valor) === (jogadorAtual.valor * 3)){
+        			return true;
+        		}
+        		return false;
+        	}
+        	function verificarLinhas(){
+        		if(checarTrilha(tabuleiro[0]) || checarTrilha(tabuleiro[1]) || checarTrilha(tabuleiro[2])){
+        			return true;
+        		}
+        		return false;
+        	}
+        	function verificarColunas(){
+        		var arrayColunaUm = [
+        			tabuleiro[0][0],
+        			tabuleiro[1][0],
+        			tabuleiro[2][0]
+        		];
+        		var arrayColunaDois = [
+        			tabuleiro[0][1],
+        			tabuleiro[1][1],
+        			tabuleiro[2][1]
+        		];
+        		var arrayColunaTres = [
+        			tabuleiro[0][2],
+        			tabuleiro[1][2],
+        			tabuleiro[2][2]
+        		];
+        		if(checarTrilha(arrayColunaUm) || checarTrilha(arrayColunaDois) || checarTrilha(arrayColunaTres)){
+        			return true;
+        		}
+        		return false;
+        	}
+        	function verificarDiagonais(){
+        		var arrayDiagonalPrincipal = [
+        			tabuleiro[0][0],
+        			tabuleiro[1][1],
+        			tabuleiro[2][2]
+        		];
+        		var arrayDiagonalSecundaria = [
+        			tabuleiro[0][2],
+        			tabuleiro[1][1],
+        			tabuleiro[2][0]
+        		];
+        		if(checarTrilha(arrayDiagonalPrincipal) || checarTrilha(arrayDiagonalSecundaria)){
+        			return true;
+        		}
+        		return false;
+        	}        	
+        	function verificarEmpate(){
+        		if(numeroDeJogadas === 9){
+        			return true;
+        		}
+        		return false;
+        	}
+        	function verificarVencedor(){
+        		if(verificarLinhas() || verificarColunas() || verificarDiagonais()){
+        			alterarStatus("Jogador " + jogadorAtual.simbolo + " venceu!");
+        		}
+        		else if(verificarEmpate()){
+        			alterarStatus("EMPATE!");
+        		}
+        	}
         	function fazerJogada(linha, coluna){
         		if(tabuleiro[linha][coluna] === VAZIO){ // === ?
         			tabuleiro[linha][coluna] = jogadorAtual;
+        			numeroDeJogadas++;
+        			verificarVencedor();
         			desenharTabuleiro();
         			proximoJogador();	
         		}else{
-        			alert("JOGADA INVÁLIDA!");
+        			alterarStatus("JOGADA INVÁLIDA!");
         		}        		
-        	}
+        	}        	
 
         </script>
     </head>
@@ -76,10 +149,17 @@
     		height: 100%;
     		justify-content: center;
     		align-itens: center;
+    		flex-direction: column;
+    	}
+    	#status{
+    		margin-top: 20px;
+    		height: 20px;
+    	}
     </style>
     <body onload="desenharTabuleiro()">
     	<div id = "principal">
     		<div id = "tabuleiro"></div>
+    		<div id = "status"></div>
     	</div>    	
     </body>
 </html>	
