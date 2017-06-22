@@ -59,10 +59,10 @@
         		}
         	}
         	function alterarStatus(mensagem){
-        		document.querySelector("#status").innerHTML = "JOGADA INVÁLIDA!";
+        		document.querySelector("#status").innerHTML = mensagem;
         	}
         	function checarTrilha(trilha){
-        		if((trilha[0].valor + trilha[1].valor + trilha[2].valor) === (jogadorAtual.valor * 3)){
+        		if((trilha[0].valor + trilha[1].valor + trilha[2].valor) == (jogadorAtual.valor * 3)){
         			return true;
         		}
         		return false;
@@ -127,9 +127,9 @@
         	function fazerJogada(linha, coluna){
         		if(tabuleiro[linha][coluna] === VAZIO){ // === ?
         			tabuleiro[linha][coluna] = jogadorAtual;
-        			numeroDeJogadas++;
-        			verificarVencedor();
         			desenharTabuleiro();
+        			numeroDeJogadas++;
+        			verificarVencedor();        			
         			proximoJogador();	
         		}else{
         			alterarStatus("JOGADA INVÁLIDA!");
